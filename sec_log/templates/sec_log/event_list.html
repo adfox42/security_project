@@ -1,0 +1,52 @@
+<!-- sec_log/templates/sec_log/event_list.html -->
+<head>
+    <body>
+        <!-- Add this inside the <head> section of your HTML files -->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'sec_log/styles.css' %}">
+
+<h1>Event Log</h1>
+
+<!-- Dropdown to select a user -->
+<form action="" method="get">
+    <select name="user_id" id="user-select">
+        <option value="">All Users</option>
+        {% for user in users %}
+            <option value="{{ user.id }}" {% if request.GET.user_id == user.id|stringformat:"s" %}selected{% endif %}>
+                {{ user.get_full_name|default:user.username }}
+            </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Filter by User">
+</form>
+
+<a href="{% url 'event_list' %}">Reset to Chronological Order</a>
+
+<!-- Event list -->
+<ul>
+    {% for event in events %}
+        <li>
+            <a href="javascript:void(0)" onclick="toggleDescription('desc-{{ forloop.counter }}')">
+                {{ event.title }} - <small>{{ event.timestamp|date:"M. d, Y, P" }}</small>
+            </a>
+            <div id="desc-{{ forloop.counter }}" style="display: none;">
+                {{ event.description }}
+            </div>
+        </li>
+    {% empty %}
+        <li>No events have been added yet.</li>
+    {% endfor %}
+</ul>
+
+<script>
+function toggleDescription(id) {
+    var element = document.getElementById(id);
+    if (element.style.display === 'none') {
+        element.style.display = 'block';
+    } else {
+        element.style.display = 'none';
+    }
+}
+</script>
+</body>
+</head>

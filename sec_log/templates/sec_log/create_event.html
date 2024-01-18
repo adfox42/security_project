@@ -1,0 +1,17 @@
+<!-- sec_log/templates/sec_log/create_event.html -->
+<head>
+  <!-- Add this inside the <head> section of your HTML files -->
+  {% load static %}
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'sec_log/styles.css' %}"
+  />
+  <body>
+    <h1>Create Event</h1>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</head>
